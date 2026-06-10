@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ATLAS — The Autonomous Campaign Agency</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◢</span>
+      <span class="brand-name">ATLAS</span>
+      <span class="brand-sub">/ autonomous campaign agency</span>
+    </div>
+    <div class="status" id="status">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">standby</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Left rail: brief + agent log -->
+    <aside class="rail">
+      <section class="brief-panel">
+        <h2 class="eyebrow">Step 01 — brief</h2>
+        <p class="lede">
+          One sentence about a brand. Three agents build a global campaign.
+        </p>
+
+        <label class="field">
+          <span>Brand brief</span>
+          <textarea
+            id="brief"
+            rows="3"
+            placeholder="A direct-to-consumer mattress brand for parents of young kids who can't sleep."
+          ></textarea>
+        </label>
+
+        <div class="row">
+          <label class="field small">
+            <span>Angles</span>
+            <input type="number" id="num-angles" value="2" min="1" max="8" />
+          </label>
+          <label class="field small">
+            <span>Markets</span>
+            <input type="number" id="num-markets" value="2" min="1" max="8" />
+          </label>
+        </div>
+
+        <button id="launch" class="cta">
+          <span>Launch campaign</span>
+          <span class="cta-glyph">→</span>
+        </button>
+
+        <p class="footnote">
+          Strategist → Copywriter → Art Director → Magnific. Powered by Akamai AI Inference.
+        </p>
+      </section>
+
+      <section class="log-panel">
+        <h2 class="eyebrow">Agent activity</h2>
+        <div id="log" class="log"></div>
+      </section>
+    </aside>
+
+    <!-- Right side: the matrix -->
+    <section class="stage">
+      <header class="stage-head">
+        <h1 class="hero" id="hero-title">Type a brief. Watch the agency work.</h1>
+        <p class="hero-sub" id="hero-sub">
+          Angles × Markets. Every cell is a live, localized ad.
+        </p>
+        <div class="meta" id="meta" hidden>
+          <span class="meta-pill" id="meta-product"></span>
+          <span class="meta-pill" id="meta-count"></span>
+          <span class="meta-pill" id="meta-elapsed"></span>
+        </div>
+      </header>
+
+      <div id="matrix" class="matrix"></div>
+
+      <div id="empty" class="empty">
+        <div class="empty-grid">
+          <div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div>
+        </div>
+        <p>The matrix will render here once the strategist locks the plan.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
