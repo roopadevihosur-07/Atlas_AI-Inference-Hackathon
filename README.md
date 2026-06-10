@@ -85,17 +85,6 @@ http://localhost:8080 — type your brief, hit launch, watch the matrix fill.
 
 ---
 
-
-## What's next (post-hackathon)
-
-- Brand kit memory (logo, palette, voice doc) for true on-brand output
-- Direct publishing to Meta Ads Manager + TikTok Ads via API
-- Performance feedback loop: ATLAS learns which angles win
-- Video ads via Magnific's Kling / Veo endpoints
-- Custom market sets per industry (B2B SaaS markets ≠ DTC fashion markets)
-
----
-
 ## File map
 
 ```
