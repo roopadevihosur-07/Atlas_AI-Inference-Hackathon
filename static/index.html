@@ -7,12 +7,118 @@
   <link rel="stylesheet" href="/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 <body>
+
+  <!-- ── Landing page overlay ─────────────────────────────────────── -->
+  <div id="landing" class="landing">
+    <div class="landing-bg"></div>
+    <div class="landing-content">
+
+      <div class="landing-brand">
+        <span class="landing-mark">◢</span>
+        <span class="landing-wordmark">ATLAS</span>
+      </div>
+
+      <h1 class="landing-headline">
+        The Autonomous<br>Campaign Agency
+      </h1>
+      <p class="landing-sub">
+        One sentence about a brand.<br>
+        Three AI agents. A full matrix of localized ads — in under two minutes.
+      </p>
+
+      <div class="landing-pills">
+        <div class="landing-pill">
+          <span class="pill-icon">🧠</span>
+          <span class="pill-label">Strategist</span>
+          <span class="pill-desc">Decomposes your brief into psychological angles and cultural markets</span>
+        </div>
+        <div class="landing-pill">
+          <span class="pill-icon">✍️</span>
+          <span class="pill-label">Copywriter</span>
+          <span class="pill-desc">Writes localized ad copy in each market's language</span>
+        </div>
+        <div class="landing-pill">
+          <span class="pill-icon">🎨</span>
+          <span class="pill-label">Art Director</span>
+          <span class="pill-desc">Generates a scene brief and produces a campaign image per cell</span>
+        </div>
+      </div>
+
+      <div class="landing-matrix-preview" aria-hidden="true">
+        <div class="lmp-header">
+          <span></span>
+          <span class="lmp-col">Scarcity</span>
+          <span class="lmp-col">Social Proof</span>
+        </div>
+        <div class="lmp-row">
+          <span class="lmp-row-label">New York</span>
+          <span class="lmp-cell" style="animation-delay:.1s"></span>
+          <span class="lmp-cell" style="animation-delay:.4s"></span>
+        </div>
+        <div class="lmp-row">
+          <span class="lmp-row-label">Tokyo</span>
+          <span class="lmp-cell" style="animation-delay:.7s"></span>
+          <span class="lmp-cell" style="animation-delay:1.0s"></span>
+        </div>
+        <p class="lmp-caption">2 angles × 2 markets = 4 production-ready ads</p>
+      </div>
+
+      <button id="enter-btn" class="landing-enter">
+        Enter ATLAS
+        <span class="enter-arrow">→</span>
+      </button>
+
+      <p class="landing-footer">
+        Built at AI Inference Hack Day · Powered by Akamai AI Inference
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Cell detail modal ──────────────────────────────────────── -->
+  <div id="modal" class="modal-overlay" aria-modal="true" role="dialog">
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+      <div class="modal-image-col">
+        <img id="modal-img" alt="" referrerpolicy="no-referrer" />
+        <div class="modal-badges">
+          <span class="modal-badge badge-angle" id="modal-angle-name"></span>
+          <span class="modal-badge badge-market" id="modal-market-name"></span>
+        </div>
+      </div>
+      <div class="modal-detail-col">
+        <div class="modal-ad-copy">
+          <h2 id="modal-headline"></h2>
+          <p id="modal-body"></p>
+          <span class="cell-cta" id="modal-cta"></span>
+        </div>
+
+        <div class="modal-section">
+          <h4 class="modal-section-title">Angle Strategy</h4>
+          <p class="modal-section-label">Psychological lever</p>
+          <p id="modal-hypothesis" class="modal-section-body"></p>
+        </div>
+
+        <div class="modal-section">
+          <h4 class="modal-section-title">Market Intelligence</h4>
+          <p class="modal-section-label">Language</p>
+          <p id="modal-language" class="modal-section-body"></p>
+          <p class="modal-section-label">Cultural context</p>
+          <p id="modal-cultural" class="modal-section-body"></p>
+        </div>
+
+        <div class="modal-section">
+          <h4 class="modal-section-title">Art Direction</h4>
+          <p class="modal-section-label">Image prompt</p>
+          <p id="modal-art" class="modal-section-body mono"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Top bar ────────────────────────────────────────────────── -->
   <header class="topbar">
     <div class="brand">
       <span class="brand-mark">◢</span>
@@ -26,21 +132,15 @@
   </header>
 
   <main>
-    <!-- Left rail: brief + agent log -->
+    <!-- Left rail -->
     <aside class="rail">
       <section class="brief-panel">
         <h2 class="eyebrow">Step 01 — brief</h2>
-        <p class="lede">
-          One sentence about a brand. Three agents build a global campaign.
-        </p>
+        <p class="lede">One sentence about a brand. Three agents build a global campaign.</p>
 
         <label class="field">
           <span>Brand brief</span>
-          <textarea
-            id="brief"
-            rows="3"
-            placeholder="A direct-to-consumer mattress brand for parents of young kids who can't sleep."
-          ></textarea>
+          <textarea id="brief" rows="3" placeholder="A direct-to-consumer mattress brand for parents of young kids who can't sleep."></textarea>
         </label>
 
         <div class="row">
@@ -59,9 +159,41 @@
           <span class="cta-glyph">→</span>
         </button>
 
-        <p class="footnote">
-          Strategist → Copywriter → Art Director → Magnific. Powered by Akamai AI Inference.
-        </p>
+        <p class="footnote">Strategist → Copywriter → Art Director → Magnific. Powered by Akamai AI Inference.</p>
+      </section>
+
+      <!-- Campaign structure guide -->
+      <section class="guide-panel">
+        <h2 class="eyebrow">How it works</h2>
+
+        <div class="guide-block">
+          <div class="guide-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">A</div>
+          <div>
+            <p class="guide-term">Angles</p>
+            <p class="guide-desc">Each angle targets a distinct psychological lever — scarcity, social proof, aspiration, or problem/agitation. Testing multiple angles reveals which message resonates most with buyers.</p>
+          </div>
+        </div>
+
+        <div class="guide-block">
+          <div class="guide-icon" style="background:linear-gradient(135deg,#f97316,#fb923c)">M</div>
+          <div>
+            <p class="guide-term">Markets</p>
+            <p class="guide-desc">Each market is a geographic + cultural target. Copy is written in the local language with culturally specific references — what works in New York fails in Tokyo without adaptation.</p>
+          </div>
+        </div>
+
+        <div class="guide-block">
+          <div class="guide-icon" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)">×</div>
+          <div>
+            <p class="guide-term">The Matrix</p>
+            <p class="guide-desc">Every cell = one angle × one market = one production-ready ad. A 2×2 grid gives 4 variants to A/B test simultaneously. Brands running 50+ variants per week outperform those running 5.</p>
+          </div>
+        </div>
+
+        <div class="guide-tip">
+          <span class="tip-label">Tip</span>
+          Click any completed cell to see the full strategy rationale, market intelligence, and art direction brief.
+        </div>
       </section>
 
       <section class="log-panel">
@@ -70,13 +202,11 @@
       </section>
     </aside>
 
-    <!-- Right side: the matrix -->
+    <!-- Right: matrix stage -->
     <section class="stage">
       <header class="stage-head">
         <h1 class="hero" id="hero-title">Type a brief. Watch the agency work.</h1>
-        <p class="hero-sub" id="hero-sub">
-          Angles × Markets. Every cell is a live, localized ad.
-        </p>
+        <p class="hero-sub" id="hero-sub">Angles × Markets. Every cell is a live, localized ad.</p>
         <div class="meta" id="meta" hidden>
           <span class="meta-pill" id="meta-product"></span>
           <span class="meta-pill" id="meta-count"></span>
@@ -87,12 +217,17 @@
       <div id="matrix" class="matrix"></div>
 
       <div id="empty" class="empty">
-        <div class="empty-grid">
-          <div></div><div></div><div></div><div></div>
-          <div></div><div></div><div></div><div></div>
-          <div></div><div></div><div></div><div></div>
+        <div class="concept-grid">
+          <div class="concept-axis-label col-label">ANGLE 1<br><span>Scarcity</span></div>
+          <div class="concept-axis-label col-label">ANGLE 2<br><span>Social Proof</span></div>
+          <div class="concept-axis-label row-label">Market A<br><span>New York</span></div>
+          <div class="concept-cell">Ad 1</div>
+          <div class="concept-cell">Ad 2</div>
+          <div class="concept-axis-label row-label">Market B<br><span>Tokyo</span></div>
+          <div class="concept-cell">Ad 3</div>
+          <div class="concept-cell">Ad 4</div>
         </div>
-        <p>The matrix will render here once the strategist locks the plan.</p>
+        <p class="empty-hint">Enter a brief and hit <strong>Launch campaign</strong> to generate your matrix.</p>
       </div>
     </section>
   </main>

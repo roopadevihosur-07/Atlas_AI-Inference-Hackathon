@@ -186,12 +186,14 @@ func (a *Agent) writeCell(_ context.Context, strat *Strategy, angle Angle, marke
 
 	// ── Image brief ───────────────────────────────────────────────────────
 	imagePrompt := fmt.Sprintf(
-		"%s parent with baby, %s home setting, soft morning light, warm lifestyle photography, cozy atmosphere, no text",
-		marketDemo(market.Name), market.Name,
+		"%s parent cradling a sleeping baby, %s apartment interior, soft golden morning light streaming through window, "+
+			"warm and peaceful atmosphere, shallow depth of field, lifestyle photography, %s, "+
+			"photorealistic, high quality, no text",
+		marketDemo(market.Name), market.Name, angle.Hypothesis,
 	)
 	art := &ArtBrief{
 		Prompt:         imagePrompt,
-		NegativePrompt: "text, watermarks, logos, distorted faces, extra fingers",
+		NegativePrompt: "text, watermarks, logos, distorted faces, extra fingers, cartoon, illustration",
 	}
 
 	return copy, art, nil

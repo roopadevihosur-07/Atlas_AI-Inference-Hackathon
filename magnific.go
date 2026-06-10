@@ -89,16 +89,28 @@ func (m *MagnificClient) do(ctx context.Context, method, path string, body any) 
 // GenerateImage submits a text-to-image task and polls until completion.
 // Returns the first generated image URL.
 func (m *MagnificClient) GenerateImage(ctx context.Context, prompt, negative string) (string, error) {
-	// Mock mode: return a deterministic placeholder so dev iteration is free.
+	// Mock mode: pick from a curated pool of verified baby/parenting Unsplash
+	// photos. Each cell gets a different image via a hash of its prompt.
 	if m.mock {
-		// Brief artificial latency so the UI feels real during dev.
 		select {
 		case <-ctx.Done():
 			return "", ctx.Err()
-		case <-time.After(1200 * time.Millisecond):
+		case <-time.After(300 * time.Millisecond):
 		}
-		seed := hashString(prompt)
-		return fmt.Sprintf("https://picsum.photos/seed/%s/768/768", seed), nil
+		pool := []string{
+			"photo-1496174742515-d2146dcf8e80",
+			"photo-1546015720-b8b30df5aa27",
+			"photo-1582212742235-a2500f31cb39",
+			"photo-1587116215900-bb2bba7c7cff",
+			"photo-1510632233616-88025944e960",
+			"photo-1481728236344-b5c828da9edf",
+			"photo-1583086762675-5a88bcc72548",
+			"photo-1543346242-2b8e41fb91ca",
+			"photo-1608586769800-7b7dc96aeb6a",
+			"photo-1552819289-e14fbbcea868",
+		}
+		idx := hashInt(prompt) % len(pool)
+		return fmt.Sprintf("https://images.unsplash.com/%s?w=768&h=768&fit=crop&q=80", pool[idx]), nil
 	}
 
 	path := "/ai/text-to-image/" + m.t2iModel
@@ -166,12 +178,18 @@ func (m *MagnificClient) Upscale(ctx context.Context, imageURL, guidancePrompt s
 	return m.pollUntilDone(ctx, path+"/"+ack.Data.TaskID)
 }
 
-// hashString returns the first 8 hex chars of a sha1 of s — used as a
-// deterministic seed for picsum placeholders in mock mode.
+// hashInt returns a deterministic positive integer from s (used as a LoremFlickr lock).
+func hashInt(s string) int {
+	sum := sha1.Sum([]byte(s))
+	return int(sum[0])<<16 | int(sum[1])<<8 | int(sum[2])
+}
+
+// hashString kept for any callers that still need the hex form.
 func hashString(s string) string {
 	sum := sha1.Sum([]byte(s))
 	return hex.EncodeToString(sum[:])[:8]
 }
+
 
 // pollUntilDone polls a Magnific task endpoint until it's COMPLETED or fails.
 func (m *MagnificClient) pollUntilDone(ctx context.Context, pollPath string) (string, error) {

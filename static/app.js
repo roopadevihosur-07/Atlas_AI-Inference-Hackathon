@@ -20,10 +20,63 @@ const els = {
   metaProduct:  $("#meta-product"),
   metaCount:    $("#meta-count"),
   metaElapsed:  $("#meta-elapsed"),
+  modal:        $("#modal"),
+  modalClose:   $("#modal-close"),
 };
+
+// ── Modal ───────────────────────────────────────────────────────────────────
+
+els.modalClose.addEventListener("click", closeModal);
+els.modal.addEventListener("click", (e) => { if (e.target === els.modal) closeModal(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+// Event delegation — one listener on the matrix handles all cell clicks.
+els.matrix.addEventListener("click", (e) => {
+  const cell = e.target.closest(".cell.is-clickable");
+  if (cell && cell._cellData) openModal(cell._cellData);
+});
+
+function openModal(cell) {
+  const angle  = strategy?.angles.find(a => a.id === cell.angle_id);
+  const market = strategy?.markets.find(m => m.id === cell.market_id);
+
+  $("#modal-headline").textContent    = cell.copy?.headline        || "—";
+  $("#modal-body").textContent        = cell.copy?.body            || "";
+  $("#modal-cta").textContent         = cell.copy?.cta             || "";
+  $("#modal-angle-name").textContent  = angle?.name                || cell.angle_id;
+  $("#modal-market-name").textContent = market?.name               || cell.market_id;
+  $("#modal-hypothesis").textContent  = angle?.hypothesis          || "—";
+  $("#modal-language").textContent    = market?.language           || "—";
+  $("#modal-cultural").textContent    = market?.cultural_notes     || "—";
+  $("#modal-art").textContent         = cell.art?.prompt           || "—";
+
+  const imgSrc = cell.upscale_url || cell.image_url || "";
+  const img = $("#modal-img");
+  img.src = imgSrc;
+  img.style.display = imgSrc ? "block" : "none";
+
+  els.modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+  els.modal.style.display = "none";
+  document.body.style.overflow = "";
+}
 
 let runStartTs = 0;
 let metaTimer = null;
+const cellStore = {}; // angleId--marketId → latest cell data for modal
+
+// ── Landing page ────────────────────────────────────────────────────────────
+
+document.getElementById("enter-btn").addEventListener("click", () => {
+  const landing = document.getElementById("landing");
+  landing.classList.add("landing-exit");
+  landing.addEventListener("animationend", () => landing.remove(), { once: true });
+});
+
+// ── Campaign ─────────────────────────────────────────────────────────────────
 
 els.launch.addEventListener("click", launch);
 els.brief.addEventListener("keydown", (e) => {
@@ -179,7 +232,9 @@ function renderStrategy(s) {
 }
 
 function upsertCell(c) {
-  const node = document.getElementById(cellId(c.angle_id, c.market_id));
+  const id = cellId(c.angle_id, c.market_id);
+  cellStore[id] = c; // always keep latest for modal
+  const node = document.getElementById(id);
   if (!node) return;
 
   const $$ = (sel) => node.querySelector(sel);
@@ -220,6 +275,11 @@ function upsertCell(c) {
   if (c.status === "done" || c.status === "error") {
     node.classList.remove("is-loading");
   }
+  if (c.status === "done") {
+    node.classList.add("is-clickable");
+    node.title = "Click to view full strategy details";
+    node._cellData = c; // stored directly on element, read by modal opener
+  }
 }
 
 function updateProgress(stats) {
@@ -254,6 +314,7 @@ function resetUI() {
   els.empty.classList.add("hidden");
   els.hero.textContent = "Strategist running...";
   els.heroSub.textContent = "decomposing the brief";
+  Object.keys(cellStore).forEach(k => delete cellStore[k]);
 }
 
 function setStatus(cls, txt) {
