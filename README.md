@@ -11,7 +11,7 @@ Built in one day at AI Inference Hack Day · June 10, 2026.
 
 ---
 
-## The pitch (90 seconds)
+## Brief Points
 
 **The problem.** Meta's algorithm rewards creative volume — brands that test 50
 ad variants per week beat brands that test 5. The catch: 95% of teams can't
@@ -59,8 +59,6 @@ Plus, DTC brands, agencies, and growth-stage SaaS will buy this tomorrow.
 └─────────────────────────────────────────────────────────────┘
 ```
 
-Default matrix: **4 angles × 3 markets = 12 ads**. Configurable via the brief.
-
 ---
 
 ## Quickstart
@@ -87,65 +85,6 @@ http://localhost:8080 — type your brief, hit launch, watch the matrix fill.
 
 ---
 
-## Budget guide
-
-Akamai $300 of inference credit is effectively unlimited for this build —
-a full campaign run uses roughly 16K tokens (~$0.03–0.10 of inference).
-
-Magnific is your real constraint. Rough cost per cell at default settings:
-
-| Step | Credits per cell (approx) |
-|---|---|
-| Flux Dev image generation | ~50 |
-| 2× Magnific upscale | ~50–100 |
-| **Total per cell** | **~100–150** |
-
-A default 4 × 3 = 12-cell campaign costs roughly **1,200–1,800 credits**.
-30K credits ≈ **15–25 full runs**, comfortably.
-
-### Cost-saving workflow
-
-1. **UI iteration** — set `MOCK_IMAGES=true` in `.env`. Uses picsum
-   placeholders, burns zero Magnific credits. Use this for 90% of dev.
-2. **Pipeline validation** — once the UI is wired up, set
-   `MOCK_IMAGES=false` and `SKIP_UPSCALE=true`. Validates the real
-   text-to-image call at half the credit cost.
-3. **Full quality** — both flags false. Use this only for rehearsals and
-   the live stage demo.
-4. **Stretch your demo runs** — switch `MAGNIFIC_T2I_MODEL` to
-   `flux-schnell` for ~5× cheaper image generation if you need more
-   demo runs.
-
----
-
-## Demo script (3 minutes on stage)
-
-**[0:00]** "Performance marketers tell us their #1 constraint isn't budget —
-it's creative volume. Meta wants 50 ads. They can make 5. Worse, they can
-only do it in one language."
-
-**[0:15]** "Meet ATLAS — the autonomous campaign agency." Pull up the UI.
-
-**[0:25]** "I'm going to type one sentence about a real brand." Type the
-judge's company in the brief box, or pick a Y Combinator startup.
-
-**[0:35]** "Launch." The Strategist agent's reasoning streams in the log
-panel. Four angles appear. Three markets appear. The 12-cell matrix
-skeleton renders.
-
-**[0:50–2:00]** Cells fill in live. Each cell shows the Copywriter's text
-(in the local language), the Art Director's prompt, then the generated
-image fades in, then the Magnific upscale ping confirms.
-
-**[2:15]** "Twelve ads. Four psychological angles. Three markets. Three
-languages. Sixty seconds of compute. Zero humans involved." Pause for
-the room.
-
-**[2:30]** "Wedge: 1,000 Shopify Plus brands burning cash on stagnant
-creative. Scale: every brand on earth has this problem. We're live tonight
-at atlas.[domain]."
-
----
 
 ## What's next (post-hackathon)
 
